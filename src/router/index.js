@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -29,7 +30,24 @@ const routes = [
   {
     path: '/stocks',
     name: 'Stocks',
-    component: () => import(/* webpackChunkName: "Stocks" */ '../views/Stocks.vue')
+    component: () => import(/* webpackChunkName: "Stocks" */ '../views/Stocks.vue'),
+    beforeEnter (to, from, next) {
+      if (store.state.auth.idToken) {
+        next()
+      } else {
+        next('/signup')
+      }
+    }
+  },
+  {
+    path: '/login',
+    name: 'Login',
+    component: () => import(/* webpackChunkName: "Login" */ '../views/auth/Login.vue')
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: () => import(/* webpackChunkName: "SignUp" */ '../views/auth/SignUp.vue')
   }
 ]
 

@@ -9,6 +9,7 @@ import axios from 'axios'
 Vue.config.productionTip = false
 
 axios.defaults.baseURL = 'https://stock-trader-4d2c6.firebaseio.com'
+
 Vue.use(ElementUI)
 Vue.filter('currency', (value) => '$' + value.toLocaleString())
 

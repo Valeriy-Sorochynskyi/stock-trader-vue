@@ -41,7 +41,7 @@ export default {
         price: this.stock.price,
         amount: this.input
       }
-      console.log(order)
+
       this.buyStock(order)
       this.input = 0
     }

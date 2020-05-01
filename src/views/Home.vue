@@ -1,10 +1,10 @@
 <template>
   <div class="home">
-    <h1>Trade or View your Portfolio</h1>
-    <h4>You may save or load your Data</h4>
-    <h4>Click on 'New Day' to begin a New Day</h4>
+    <h1 class="home__heading">Trade or View your Portfolio</h1>
+    <h4 class="home__sub-heading">You should sign up to save or load your Data</h4>
+    <h4 class="home__sub-heading">Click on 'New Day' to begin a New Day</h4>
     <hr>
-    <p>Your Funds: {{ funds | currency }}</p>
+    <p v-if="isAuthenticated" class="home__info">Your Funds: {{ funds | currency }}</p>
   </div>
 </template>
 
@@ -14,7 +14,22 @@ import { mapGetters } from 'vuex'
 export default {
   name: 'Home',
   computed: {
-    ...mapGetters(['funds'])
+    ...mapGetters(['funds', 'isAuthenticated'])
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.home {
+  &__heading,
+  &__sub-heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  &__info {
+    margin-top: 20px;
+    text-align: center;
+  }
+}
+</style>

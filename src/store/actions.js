@@ -1,7 +1,10 @@
 import axios from 'axios'
 
-export const loadData = ({ commit }) => {
-  axios.get('/data.json')
+export const loadData = ({ commit, state }) => {
+  if (!state.auth.idToken) {
+    return
+  }
+  axios.get('/data.json' + '?auth=' + state.auth.idToken)
     .then(response => response.data)
     .then(data => {
       if (data) {
