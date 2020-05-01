@@ -39,6 +39,7 @@ export default {
           localStorage.setItem('token', res.data.idToken)
           localStorage.setItem('userId', res.data.localId)
           localStorage.setItem('expirationDate', expirationDate)
+          router.push('/')
         })
         .catch(error => console.log(error))
     },

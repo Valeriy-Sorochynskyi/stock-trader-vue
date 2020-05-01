@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import store from '../store'
 
 Vue.use(VueRouter)
 
@@ -32,7 +31,8 @@ const routes = [
     name: 'Stocks',
     component: () => import(/* webpackChunkName: "Stocks" */ '../views/Stocks.vue'),
     beforeEnter (to, from, next) {
-      if (store.state.auth.idToken) {
+      const token = localStorage.getItem('token')
+      if (token) {
         next()
       } else {
         next('/signup')
