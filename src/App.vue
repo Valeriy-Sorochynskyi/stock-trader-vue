@@ -74,7 +74,7 @@ import axios from 'axios'
 
 export default {
   methods: {
-    ...mapActions(['getStocks', 'randomStocks', 'logout']),
+    ...mapActions(['getStocks', 'randomStocks', 'logout', 'tryAutoLogin']),
 
     onSave () {
       if (!this.$store.state.auth.idToken) {
@@ -100,7 +100,6 @@ export default {
 
     onLogout () {
       this.logout()
-      this.$router.push('/')
     }
   },
 
@@ -114,6 +113,7 @@ export default {
 
   created () {
     this.getStocks()
+    this.tryAutoLogin()
   }
 }
 </script>
