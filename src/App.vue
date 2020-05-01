@@ -9,13 +9,18 @@
           text-color="#fff"
           :default-active="this.$route.path"
           active-text-color="#ffd04b"
-          :router="true"
         >
           <el-menu-item index="/">
-            <i class="el-icon-s-home menu__icon"></i>
+            <router-link to="/" class="menu__link">
+              <i class="el-icon-s-home menu__icon"></i>
+            </router-link>
           </el-menu-item>
-          <el-menu-item v-if="isAuthenticated" index="/stocks">Stocks</el-menu-item>
-          <el-menu-item v-if="isAuthenticated" index="/portfolio">Portfolio</el-menu-item>
+          <el-menu-item v-if="isAuthenticated" index="/stocks">
+            <router-link to="/stocks" class="menu__link">Stocks</router-link>
+          </el-menu-item>
+          <el-menu-item v-if="isAuthenticated" index="/portfolio">
+            <router-link to="/portfolio" class="menu__link">Portfolio</router-link>
+          </el-menu-item>
           <el-menu-item v-if="isAuthenticated" class="float-right">Funds: {{ funds | currency }}</el-menu-item>
           <el-submenu v-if="isAuthenticated" index="2" class="float-right">
             <template slot="title">Save & Load</template>
@@ -23,8 +28,12 @@
             <el-menu-item @click="onLoad">Load</el-menu-item>
           </el-submenu>
           <el-menu-item v-if="isAuthenticated" class="float-right" @click="endDay">End Day</el-menu-item>
-          <el-menu-item v-if="!isAuthenticated" index="/login" class="float-right">Login</el-menu-item>
-          <el-menu-item v-if="!isAuthenticated" index="/signup" class="float-right">Sign Up</el-menu-item>
+          <el-menu-item v-if="!isAuthenticated" index="/login" class="float-right">
+            <router-link to="/login" class="menu__link">Login</router-link>
+          </el-menu-item>
+          <el-menu-item v-if="!isAuthenticated" index="/signup" class="float-right">
+            <router-link to="/signup" class="menu__link">Sign Up</router-link>
+          </el-menu-item>
         </el-menu>
       </el-header>
       <el-main>
@@ -86,6 +95,11 @@ export default {
   .el-submenu.float-right,
   .el-menu-item.float-right {
     float: right;
+  }
+
+  &__link {
+    text-decoration: none;
+    display: inline-block;
   }
 }
 
