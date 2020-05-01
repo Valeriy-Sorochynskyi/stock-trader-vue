@@ -21,18 +21,41 @@
           <el-menu-item v-if="isAuthenticated" index="/portfolio">
             <router-link to="/portfolio" class="menu__link">Portfolio</router-link>
           </el-menu-item>
-          <el-menu-item v-if="isAuthenticated" class="float-right">Funds: {{ funds | currency }}</el-menu-item>
+          <el-menu-item
+            v-if="isAuthenticated"
+            class="float-right">
+              Funds: {{ funds | currency }}
+            </el-menu-item>
+          <el-menu-item
+            v-if="isAuthenticated"
+            class="float-right"
+            @click="onLogout"
+          >
+            Log Out
+          </el-menu-item>
           <el-submenu v-if="isAuthenticated" index="2" class="float-right">
             <template slot="title">Save & Load</template>
             <el-menu-item @click="onSave">Save</el-menu-item>
             <el-menu-item @click="onLoad">Load</el-menu-item>
           </el-submenu>
-          <el-menu-item v-if="isAuthenticated" class="float-right" @click="endDay">End Day</el-menu-item>
-          <el-menu-item v-if="!isAuthenticated" index="/login" class="float-right">
+          <el-menu-item
+            v-if="isAuthenticated"
+            class="float-right"
+            @click="endDay"
+          >
+            End Day
+          </el-menu-item>
+          <el-menu-item
+            v-if="!isAuthenticated" index="/login" class="float-right">
             <router-link to="/login" class="menu__link">Login</router-link>
           </el-menu-item>
-          <el-menu-item v-if="!isAuthenticated" index="/signup" class="float-right">
-            <router-link to="/signup" class="menu__link">Sign Up</router-link>
+          <el-menu-item
+            v-if="!isAuthenticated"
+            index="/signup"
+            class="float-right">
+            <router-link to="/signup" class="menu__link">
+              Sign Up
+            </router-link>
           </el-menu-item>
         </el-menu>
       </el-header>
@@ -51,7 +74,7 @@ import axios from 'axios'
 
 export default {
   methods: {
-    ...mapActions(['getStocks', 'randomStocks', 'loadData']),
+    ...mapActions(['getStocks', 'randomStocks', 'logout']),
 
     onSave () {
       if (!this.$store.state.auth.idToken) {
@@ -73,15 +96,20 @@ export default {
 
     endDay () {
       this.randomStocks()
+    },
+
+    onLogout () {
+      this.logout()
+      this.$router.push('/')
     }
   },
 
   computed: {
+    ...mapGetters(['isAuthenticated']),
     funds () {
       return this.$store.getters.funds
-    },
+    }
 
-    ...mapGetters(['isAuthenticated'])
   },
 
   created () {

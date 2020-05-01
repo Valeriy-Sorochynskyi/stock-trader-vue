@@ -11,6 +11,11 @@ export default {
     authUser (state, userData) {
       state.idToken = userData.token
       state.userId = userData.userId
+    },
+
+    unAuth (state) {
+      state.idToken = null
+      state.userId = null
     }
   },
   actions: {
@@ -46,6 +51,10 @@ export default {
           router.push('/stocks')
         })
         .catch(error => console.log(error))
+    },
+
+    logout ({ commit }) {
+      commit('unAuth')
     }
   },
   getters: {
