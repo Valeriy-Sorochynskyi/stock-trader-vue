@@ -26,7 +26,7 @@ export default {
       if (stock.amount > order.amount) {
         stock.amount -= order.amount
       } else {
-        state.stocks.splice(state.stocks.indexOf(stock, 1))
+        state.stocks.splice(state.stocks.indexOf(stock), 1)
       }
 
       state.funds += order.price * order.amount

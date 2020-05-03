@@ -1,4 +1,5 @@
 import stocksFromServer from '../../data.js'
+import axios from 'axios'
 
 export default {
   state: {
@@ -16,6 +17,10 @@ export default {
 
     randomStocks ({ commit }) {
       commit('RND_STOCKS')
+    },
+
+    saveData ({ commit }, data) {
+      commit('SAVE_DATA', data)
     }
   },
 
@@ -28,6 +33,12 @@ export default {
       state.stocks.forEach(stock => {
         stock.price = Math.round(stock.price * (1 + Math.random() - 0.5))
       })
+    },
+
+    'SAVE_DATA' (state, data) {
+      axios.put('/data.json', data)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
     }
   },
 

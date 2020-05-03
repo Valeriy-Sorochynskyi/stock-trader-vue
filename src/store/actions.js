@@ -4,7 +4,7 @@ export const loadData = ({ commit, state }) => {
   if (!state.auth.idToken) {
     return
   }
-  axios.get('/data.json' + '?auth=' + state.auth.idToken)
+  axios.get('/data.json')
     .then(response => response.data)
     .then(data => {
       if (data) {
@@ -19,5 +19,5 @@ export const loadData = ({ commit, state }) => {
         commit('SET_STOCKS', stocks)
         commit('SET_PORTFOLIO', portfolio)
       }
-    })
+    }).catch(error => console.log(error.response))
 }

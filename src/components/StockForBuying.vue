@@ -1,26 +1,31 @@
 <template>
-  <el-col :md="12" :lg="8" :xl="6">
-    <el-card class="card">
-      <div slot="header">
-        <h3 class="card__header">{{ stock.name }}</h3>
-        (<small>Price: {{ stock.price }}</small>)
-      </div>
-      <div class="card__body">
-        <el-input
-          type="number"
+  <el-card class="card">
+    <div slot="header">
+      <h3 class="card__header">{{ stock.name }}</h3>
+      (<small>Price: {{ stock.price }}</small>)
+    </div>
+    <div class="card__body">
+        <el-input-number
           v-model="input"
-          class="card__input"
-        ></el-input>
-        <el-button
-          :disabled="notAnoughFunds || input <= 0 || !Number.isInteger(Number(input))"
-          type="success"
-          @click="buyOrder"
-        >
-          {{notAnoughFunds ? 'Not enough funds' : 'Buy'}}
-        </el-button>
-      </div>
-    </el-card>
-  </el-col>
+          @change="handleChange"
+          :min="0"
+          :max="funds / stock.price"
+        ></el-input-number>
+      <!-- <el-input
+        type="number"
+        v-model="input"
+        @change="handleChange"
+        class="card__input"
+      ></el-input> -->
+      <el-button
+        :disabled="notAnoughFunds || input <= 0 || !Number.isInteger(Number(input))"
+        type="success"
+        @click="buyOrder"
+      >
+        {{notAnoughFunds ? 'Not enough funds' : 'Buy'}}
+      </el-button>
+    </div>
+  </el-card>
 </template>
 
 <script>
@@ -33,8 +38,10 @@ export default {
       input: 0
     }
   },
+
   methods: {
     ...mapActions(['buyStock']),
+
     buyOrder () {
       const order = {
         id: this.stock.id,
@@ -44,6 +51,10 @@ export default {
 
       this.buyStock(order)
       this.input = 0
+    },
+
+    handleChange (value) {
+      this.input = +value
     }
   },
 
@@ -60,18 +71,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.el-card__header {
-  background-color: green;
-}
 .card {
   margin-bottom: 20px;
+
   &__body {
     display: flex;
     justify-content: space-between;
   }
+
   &__input {
     margin-right: 20px;
   }
+
   &__header {
     display: inline-block;
   }

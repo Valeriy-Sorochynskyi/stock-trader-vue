@@ -18,6 +18,7 @@ export default {
       state.userId = null
     }
   },
+
   actions: {
     signup ({ commit, dispatch }, authData) {
       axiosAuth.post('/accounts:signUp?key=AIzaSyDLzMdBM3yeRBVTM3z6fbSh3p8TYOq-0jQ', {
@@ -65,7 +66,7 @@ export default {
           localStorage.setItem('expirationDate', expirationDate)
           router.push('/')
         })
-        .catch(error => console.log(error))
+        .catch(error => console.log(error.response.data))
     },
 
     tryAutoLogin ({ commit }) {
@@ -94,7 +95,7 @@ export default {
       localStorage.removeItem('token')
       localStorage.removeItem('userId')
 
-      router.replace('/')
+      router.push('/login')
     },
 
     setLogoutTimer ({ commit }, expTime) {
@@ -103,6 +104,7 @@ export default {
       }, expTime * 1000)
     }
   },
+
   getters: {
     isAuthenticated (state) {
       return state.idToken !== null

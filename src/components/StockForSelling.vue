@@ -1,26 +1,26 @@
 <template>
-  <el-col :md="12" :lg="8" :xl="6">
-    <el-card class="card">
-      <div slot="header">
-        <h3 class="card__header">{{ stock.name }}</h3>
-        (<small>Price: {{ stock.price }} | Amount: {{ stock.amount }}</small>)
-      </div>
-      <div class="card__body">
-        <el-input
-          type="number"
-          v-model="input"
-          class="card__input"
-        ></el-input>
-        <el-button
-          :disabled="notAnoughAmount || input <= 0 || !Number.isInteger(Number(input))"
-          type="warning"
-          @click="sellOrder"
-        >
-          {{notAnoughAmount ? 'Not anough amount': 'Sell'}}
-        </el-button>
-      </div>
-    </el-card>
-  </el-col>
+  <el-card class="card">
+    <div slot="header">
+      <h3 class="card__header">{{ stock.name }}</h3>
+      (<small>Price: {{ stock.price }} | Amount: {{ stock.amount }}</small>)
+    </div>
+    <div class="card__body">
+      <el-input-number
+        class="card__input"
+        v-model="input"
+        @change="handleChange"
+        :min="0"
+        :max="stock.amount"
+      ></el-input-number>
+      <el-button
+        type="warning"
+        @click="sellOrder"
+      >
+        Sell
+      </el-button>
+    </div>
+  </el-card>
+
 </template>
 
 <script>
@@ -33,11 +33,7 @@ export default {
       input: 0
     }
   },
-  computed: {
-    notAnoughAmount () {
-      return this.input > this.stock.amount
-    }
-  },
+
   methods: {
     ...mapActions(['sellStock']),
     sellOrder () {
@@ -48,6 +44,9 @@ export default {
       }
       this.sellStock(order)
       this.input = 0
+    },
+    handleChange (value) {
+      this.input = +value
     }
   }
 }
@@ -56,13 +55,16 @@ export default {
 <style lang="scss" scoped>
 .card {
   margin-bottom: 20px;
+
   &__body {
     display: flex;
     justify-content: space-between;
   }
+
   &__input {
     margin-right: 20px;
   }
+
   &__header {
     display: inline-block;
   }

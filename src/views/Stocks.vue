@@ -1,11 +1,16 @@
 <template>
   <div>
     <el-row :gutter="20">
-      <StockForBuying
-        v-for="stock in stocks"
-        :key="stock.id"
-        :stock="stock"
-      />
+        <el-col
+          v-for="stock in stocks"
+          :key="stock.id"
+          :sm="12"
+          :md="12"
+          :lg="6"
+          :xl="6"
+        >
+          <StockForBuying :stock="stock" />
+        </el-col>
     </el-row>
   </div>
 </template>
