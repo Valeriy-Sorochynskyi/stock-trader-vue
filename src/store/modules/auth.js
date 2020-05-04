@@ -40,7 +40,7 @@ export default {
           localStorage.setItem('token', res.data.idToken)
           localStorage.setItem('userId', res.data.localId)
           localStorage.setItem('expirationDate', expirationDate)
-          router.push('/')
+          router.push('/stocks')
         })
         .catch(error => console.log(error))
     },
@@ -64,12 +64,12 @@ export default {
           localStorage.setItem('token', res.data.idToken)
           localStorage.setItem('userId', res.data.localId)
           localStorage.setItem('expirationDate', expirationDate)
-          router.push('/')
+          router.push('/stocks')
         })
         .catch(error => console.log(error.response.data))
     },
 
-    tryAutoLogin ({ commit }) {
+    tryAutoLogin ({ commit, dispatch }) {
       const token = localStorage.getItem('token')
       const userId = localStorage.getItem('userId')
       const expirationDate = localStorage.getItem('expirationDate')
@@ -101,7 +101,8 @@ export default {
     setLogoutTimer ({ commit }, expTime) {
       setTimeout(() => {
         commit('unAuth')
-      }, expTime * 1000)
+        router.push('/login')
+      }, expTime)
     }
   },
 

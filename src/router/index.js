@@ -24,7 +24,15 @@ const routes = [
   {
     path: '/portfolio',
     name: 'Portfolio',
-    component: () => import(/* webpackChunkName: "Portfolio" */ '../views/Portfolio.vue')
+    component: () => import(/* webpackChunkName: "Portfolio" */ '../views/Portfolio.vue'),
+    beforeEnter (to, from, next) {
+      const token = localStorage.getItem('token')
+      if (token) {
+        next()
+      } else {
+        next('/login')
+      }
+    }
   },
   {
     path: '/stocks',
@@ -35,19 +43,35 @@ const routes = [
       if (token) {
         next()
       } else {
-        next('/signup')
+        next('/login')
       }
     }
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "Login" */ '../views/auth/Login.vue')
+    component: () => import(/* webpackChunkName: "Login" */ '../views/auth/Login.vue'),
+    beforeEnter (to, from, next) {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next()
+      } else {
+        next('/stocks')
+      }
+    }
   },
   {
     path: '/signup',
     name: 'SignUp',
-    component: () => import(/* webpackChunkName: "SignUp" */ '../views/auth/SignUp.vue')
+    component: () => import(/* webpackChunkName: "SignUp" */ '../views/auth/SignUp.vue'),
+    beforeEnter (to, from, next) {
+      const token = localStorage.getItem('token')
+      if (!token) {
+        next()
+      } else {
+        next('/stocks')
+      }
+    }
   }
 ]
 

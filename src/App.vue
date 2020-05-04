@@ -28,6 +28,7 @@ export default {
   },
 
   created () {
+    console.log('---------created-------------')
     this.getStocks()
     this.tryAutoLogin()
   }
