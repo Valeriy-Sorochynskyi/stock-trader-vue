@@ -1,5 +1,5 @@
 <template>
-  <el-header class="header">
+  <header class="header">
     <el-menu
       class="menu"
       mode="horizontal"
@@ -75,7 +75,7 @@
           </router-link>
       </el-menu-item>
     </el-menu>
-  </el-header>
+  </header>
 </template>
 
 <script>

@@ -1,4 +1,3 @@
-// import { axiosAuth, URL_KEY } from '@/api'
 import router from '@/router'
 import { getCookie } from '@/helpers'
 import { authUser, URL_KEY } from '../../api/authApi'

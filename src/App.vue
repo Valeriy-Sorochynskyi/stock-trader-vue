@@ -1,13 +1,11 @@
 <template>
   <div id="app">
-    <el-container direction="vertical">
-      <Header />
-      <el-main>
-        <transition name="fade" mode="out-in">
-          <router-view />
-        </transition>
-      </el-main>
-    </el-container>
+    <Header />
+    <el-main>
+      <transition name="fade" mode="out-in">
+        <router-view />
+      </transition>
+    </el-main>
   </div>
 </template>
 
