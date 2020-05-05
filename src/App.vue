@@ -22,15 +22,12 @@ export default {
 
   methods: {
     ...mapActions([
-      'getStocks',
-      'tryAutoLogin'
+      'getStocks'
     ])
   },
 
   created () {
-    console.log('---------created-------------')
     this.getStocks()
-    this.tryAutoLogin()
   }
 }
 </script>
@@ -50,5 +47,13 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
+}
+
+.menu__submenu {
+  .el-submenu__title {
+    i {
+      color: #fff;
+    }
+  }
 }
 </style>

@@ -1,12 +1,12 @@
 <template>
   <div class="login">
     <el-card>
-      <h2 class="login-heading">Login</h2>
+      <h2 class="login__heading">Login</h2>
       <el-form
-        class="login-form"
+        class="login__form"
         :model="form"
         :rules="rules"
-        @submit.native.prevent="login"
+        ref="form"
       >
         <el-form-item prop="email">
           <el-input
@@ -23,11 +23,10 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            :loading="loading"
-            class="login-button"
+            class="login__button"
             type="success"
-            native-type="submit"
             block
+            @click="login('form')"
           >Login</el-button>
         </el-form-item>
       </el-form>
@@ -45,8 +44,6 @@ export default {
         email: '',
         password: ''
       },
-
-      loading: false,
 
       rules: {
         email: [
@@ -75,15 +72,22 @@ export default {
   },
 
   methods: {
-    login () {
-      const loginForm = {
-        email: this.form.email,
-        password: this.form.password
-      }
+    login (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const loginForm = {
+            email: this.form.email,
+            password: this.form.password
+          }
 
-      this.$store.dispatch('login', {
-        email: loginForm.email,
-        password: loginForm.password
+          this.$store.dispatch('login', {
+            email: loginForm.email,
+            password: loginForm.password
+          })
+        } else {
+          alert('Error submit!')
+          return false
+        }
       })
     }
   }
@@ -96,19 +100,19 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.login-button {
-  width: 100%;
-  margin-top: 40px;
-}
+  &__button {
+    width: 100%;
+    margin-top: 40px;
+  }
 
-.login-form {
-  width: 290px;
-}
+  &__form {
+    width: 290px;
+  }
 
-.login-heading {
-  text-align: center;
-  margin-bottom: 20px;
+  &__heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 }
 </style>

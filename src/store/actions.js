@@ -1,10 +1,11 @@
-import axios from 'axios'
+import { axiosData } from '@/api/dataApi.js'
 
 export const loadData = ({ commit, state }) => {
   if (!state.auth.idToken) {
     return
   }
-  axios.get('/data.json')
+
+  axiosData.get('/data.json')
     .then(response => response.data)
     .then(data => {
       if (data) {

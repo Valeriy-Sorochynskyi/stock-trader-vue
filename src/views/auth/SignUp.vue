@@ -1,12 +1,12 @@
 <template>
-  <div class="login">
+  <div class="signup">
     <el-card>
-      <h2 class="login-heading">Sign Up</h2>
+      <h2 class="signup__heading">Sign Up</h2>
       <el-form
-        class="login-form"
+        class="signup__form"
         :model="form"
         :rules="rules"
-        @submit.native.prevent="signUp"
+        ref="form"
       >
         <el-form-item prop="username">
           <el-input
@@ -27,20 +27,19 @@
             type="password"
           ></el-input>
         </el-form-item>
-        <el-form-item prop="confirm">
+        <!-- <el-form-item prop="confirm">
           <el-input
             v-model="form.confirm"
             placeholder="Confirm"
             type="password"
           ></el-input>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item>
           <el-button
-            :loading="loading"
-            class="login-button"
+            class="signup__button"
             type="success"
-            native-type="submit"
             block
+            @click="signUp('form')"
           >SignUp</el-button>
         </el-form-item>
       </el-form>
@@ -56,11 +55,11 @@ export default {
     return {
       form: {
         username: '',
-        password: '',
-        confirm: '',
-        email: ''
+        email: '',
+        password: ''
+        // confirm: '',
       },
-      loading: false,
+
       rules: {
         username: [
           {
@@ -74,6 +73,7 @@ export default {
             trigger: 'blur'
           }
         ],
+
         email: [
           {
             required: true,
@@ -86,6 +86,7 @@ export default {
             trigger: 'blur'
           }
         ],
+
         password: [
           { required: true, message: 'Password is required', trigger: 'blur' },
           {
@@ -93,30 +94,39 @@ export default {
             message: 'Password length should be at least 5 characters',
             trigger: 'blur'
           }
-        ],
-        confirm: [
-          { required: true, message: 'Confirm is required', trigger: 'blur' },
-          {
-            min: 5,
-            message: 'Confirm length should be at least 5 characters',
-            trigger: 'blur'
-          }
         ]
+
+        // confirm: [
+        //   { required: true, message: 'Confirm is required', trigger: 'blur' },
+        //   {
+        //     min: 5,
+        //     message: 'Confirm length should be at least 5 characters',
+        //     trigger: 'blur'
+        //   }
+        // ]
       }
     }
   },
+
   methods: {
-    signUp () {
-      const formData = {
-        username: this.form.username,
-        email: this.form.email,
-        password: this.form.password,
-        confirm: this.form.confirm
-      }
-      console.log(formData)
-      this.$store.dispatch('signup', {
-        email: formData.email,
-        password: formData.password
+    signUp (formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          const formData = {
+            username: this.form.username,
+            email: this.form.email,
+            password: this.form.password,
+            confirm: this.form.confirm
+          }
+
+          this.$store.dispatch('signup', {
+            email: formData.email,
+            password: formData.password
+          })
+        } else {
+          alert('Error submit!')
+          return false
+        }
       })
     }
   }
@@ -124,24 +134,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.login {
+.signup {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-}
 
-.login-button {
-  width: 100%;
-  margin-top: 40px;
-}
+  &__button {
+    width: 100%;
+    margin-top: 40px;
+  }
 
-.login-form {
-  width: 290px;
-}
+  &__form {
+    width: 290px;
+  }
 
-.login-heading {
-  text-align: center;
-  margin-bottom: 20px;
+  &__heading {
+    text-align: center;
+    margin-bottom: 20px;
+  }
 }
 </style>

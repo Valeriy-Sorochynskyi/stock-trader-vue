@@ -13,6 +13,7 @@
         :max="stock.amount"
       ></el-input-number>
       <el-button
+        :disabled="input <= 0"
         type="warning"
         @click="sellOrder"
       >

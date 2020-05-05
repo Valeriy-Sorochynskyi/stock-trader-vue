@@ -1,100 +1,35 @@
-import axiosAuth from '../../axios-auth'
-import router from '../../router'
+// import { axiosAuth, URL_KEY } from '@/api'
+import router from '@/router'
+import { getCookie } from '@/helpers'
+import { authUser, URL_KEY } from '../../api/authApi'
 
 export default {
   state: {
-    idToken: null,
-    userId: null
+    idToken: getCookie('token') || null
   },
 
   mutations: {
     authUser (state, userData) {
       state.idToken = userData.token
-      state.userId = userData.userId
     },
 
     unAuth (state) {
       state.idToken = null
-      state.userId = null
+      document.cookie = 'token=""; max-age=-1'
     }
   },
 
   actions: {
-    signup ({ commit, dispatch }, authData) {
-      axiosAuth.post('/accounts:signUp?key=AIzaSyDLzMdBM3yeRBVTM3z6fbSh3p8TYOq-0jQ', {
-        email: authData.email,
-        password: authData.password,
-        returnSecureToken: true
-      })
-        .then(res => {
-          console.log(res)
-          commit('authUser', {
-            token: res.data.idToken,
-            userId: res.data.localId
-          })
-
-          const now = new Date()
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-
-          dispatch('setLogoutTimer', res.data.expiresIn)
-          localStorage.setItem('token', res.data.idToken)
-          localStorage.setItem('userId', res.data.localId)
-          localStorage.setItem('expirationDate', expirationDate)
-          router.push('/stocks')
-        })
-        .catch(error => console.log(error))
+    signup (context, authData) {
+      authUser(context, authData, 'signUp', URL_KEY)
     },
 
-    login ({ commit, dispatch }, authData) {
-      axiosAuth.post('/accounts:signInWithPassword?key=AIzaSyDLzMdBM3yeRBVTM3z6fbSh3p8TYOq-0jQ', {
-        email: authData.email,
-        password: authData.password,
-        returnSecureToken: true
-      })
-        .then(res => {
-          console.log(res)
-          commit('authUser', {
-            token: res.data.idToken,
-            userId: res.data.localId
-          })
-          const now = new Date()
-          const expirationDate = new Date(now.getTime() + res.data.expiresIn * 1000)
-
-          dispatch('setLogoutTimer', res.data.expiresIn)
-          localStorage.setItem('token', res.data.idToken)
-          localStorage.setItem('userId', res.data.localId)
-          localStorage.setItem('expirationDate', expirationDate)
-          router.push('/stocks')
-        })
-        .catch(error => console.log(error.response.data))
-    },
-
-    tryAutoLogin ({ commit, dispatch }) {
-      const token = localStorage.getItem('token')
-      const userId = localStorage.getItem('userId')
-      const expirationDate = localStorage.getItem('expirationDate')
-      const now = new Date()
-
-      if (!token) {
-        return
-      }
-
-      if (now >= expirationDate) {
-        return
-      }
-
-      commit('authUser', {
-        token: token,
-        userId: userId
-      })
+    login (context, authData) {
+      authUser(context, authData, 'signInWithPassword', URL_KEY)
     },
 
     logout ({ commit }) {
       commit('unAuth')
-      localStorage.removeItem('expirationDate')
-      localStorage.removeItem('token')
-      localStorage.removeItem('userId')
-
       router.push('/login')
     },
 
@@ -102,7 +37,7 @@ export default {
       setTimeout(() => {
         commit('unAuth')
         router.push('/login')
-      }, expTime)
+      }, +expTime * 1000)
     }
   },
 

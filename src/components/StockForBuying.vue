@@ -11,12 +11,6 @@
           :min="0"
           :max="funds / stock.price"
         ></el-input-number>
-      <!-- <el-input
-        type="number"
-        v-model="input"
-        @change="handleChange"
-        class="card__input"
-      ></el-input> -->
       <el-button
         :disabled="notAnoughFunds || input <= 0 || !Number.isInteger(Number(input))"
         type="success"

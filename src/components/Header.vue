@@ -91,17 +91,7 @@ export default {
     ]),
 
     onSave () {
-      if (!this.$store.state.auth.idToken) {
-        return
-      }
-
-      const data = {
-        funds: this.$store.getters.funds,
-        portfolioStocks: this.$store.getters.portfolioStocks,
-        stocks: this.$store.getters.stocks
-      }
-
-      this.saveData(data)
+      this.saveData()
     },
 
     onLoad () {
