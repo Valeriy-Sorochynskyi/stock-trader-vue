@@ -45,11 +45,10 @@ export default {
   opacity: 0;
 }
 
-.menu__submenu {
-  .el-submenu__title {
-    i {
-      color: #fff;
-    }
+.dropdown {
+  &__title,
+  &__item {
+    color: #fff;
   }
 }
 </style>
