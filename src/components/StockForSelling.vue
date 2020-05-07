@@ -37,15 +37,18 @@ export default {
 
   methods: {
     ...mapActions(['sellStock']),
+
     sellOrder () {
       const order = {
         id: this.stock.id,
         price: this.stock.price,
         amount: this.input
       }
+
       this.sellStock(order)
       this.input = 0
     },
+
     handleChange (value) {
       this.input = +value
     }

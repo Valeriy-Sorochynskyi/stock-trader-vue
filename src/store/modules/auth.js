@@ -1,6 +1,6 @@
 import router from '@/router'
 import { getCookie } from '@/helpers'
-import { authUser, URL_KEY } from '../../api/authApi'
+import { URL_KEY, axiosAuth } from '@/api/authApi'
 
 export default {
   state: {
@@ -19,24 +19,45 @@ export default {
   },
 
   actions: {
-    signup (context, authData) {
-      authUser(context, authData, 'signUp', URL_KEY)
+    signup ({ commit }, authData) {
+      return axiosAuth.post(`/accounts:signUp?key=${URL_KEY}`, {
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      })
+        .then(res => {
+          const tokenId = res.data.idToken
+          document.cookie = `token=${tokenId}; max-age=${res.data.expiresIn}`
+          commit('authUser', {
+            token: tokenId
+          })
+
+          router.push('/')
+        })
     },
 
-    login (context, authData) {
-      authUser(context, authData, 'signInWithPassword', URL_KEY)
+    login ({ commit }, authData) {
+      return axiosAuth.post(`/accounts:signInWithPassword?key=${URL_KEY}`, {
+        email: authData.email,
+        password: authData.password,
+        returnSecureToken: true
+      })
+        .then(res => {
+          const tokenId = res.data.idToken
+
+          document.cookie = `token=${tokenId}; max-age=${res.data.expiresIn}`
+
+          commit('authUser', {
+            token: tokenId
+          })
+
+          router.push('/')
+        })
     },
 
     logout ({ commit }) {
       commit('unAuth')
       router.push('/login')
-    },
-
-    setLogoutTimer ({ commit }, expTime) {
-      setTimeout(() => {
-        commit('unAuth')
-        router.push('/login')
-      }, +expTime * 1000)
     }
   },
 

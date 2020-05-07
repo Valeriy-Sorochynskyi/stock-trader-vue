@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Header from './components/Header'
+import Header from '@/components/Header'
 import { mapActions } from 'vuex'
 
 export default {
@@ -19,9 +19,7 @@ export default {
   },
 
   methods: {
-    ...mapActions([
-      'getStocks'
-    ])
+    ...mapActions(['getStocks'])
   },
 
   created () {

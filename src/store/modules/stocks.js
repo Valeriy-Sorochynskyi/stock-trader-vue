@@ -1,4 +1,4 @@
-import stocksFromServer from '../../data.js'
+import stocksFromServer from '@/data.js'
 import { axiosData } from '@/api/dataApi.js'
 
 export default {
@@ -19,7 +19,7 @@ export default {
       commit('RND_STOCKS')
     },
 
-    saveData ({ commit, getters, rootState }) {
+    saveData ({ getters, rootState }) {
       if (!rootState.auth.idToken) {
         return
       }
@@ -30,7 +30,7 @@ export default {
         stocks: getters.stocks
       }
 
-      commit('SAVE_DATA', data)
+      return axiosData.put('/data.json', data)
     }
   },
 
@@ -43,11 +43,6 @@ export default {
       state.stocks.forEach(stock => {
         stock.price = Math.round(stock.price * (1 + Math.random() - 0.5))
       })
-    },
-
-    'SAVE_DATA' (state, data) {
-      axiosData.put('/data.json', data)
-        .catch(err => console.log(err.response))
     }
   },
 

@@ -2,21 +2,26 @@
   <el-card class="card">
     <div slot="header">
       <h3 class="card__header">{{ stock.name }}</h3>
-      (<small>Price: {{ stock.price }}</small>)
+      (<small>Price: {{ stock.price }}</small
+      >)
     </div>
     <div class="card__body">
-        <el-input-number
-          v-model="input"
-          @change="handleChange"
-          :min="0"
-          :max="funds / stock.price"
-        ></el-input-number>
+      <el-input-number
+        v-model="input"
+        @change="handleChange"
+        :min="0"
+        :max="funds / stock.price"
+      ></el-input-number>
       <el-button
-        :disabled="notAnoughFunds || input <= 0 || !Number.isInteger(Number(input))"
+        :disabled="
+          notAnoughFunds
+          || input <= 0
+          || !Number.isInteger(Number(input))
+        "
         type="success"
         @click="buyOrder"
       >
-        {{notAnoughFunds ? 'Not enough funds' : 'Buy'}}
+        {{ notAnoughFunds ? 'Not enough funds' : 'Buy' }}
       </el-button>
     </div>
   </el-card>

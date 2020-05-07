@@ -5,11 +5,12 @@
       mode="horizontal"
       background-color="#67C23A"
       text-color="#fff"
-      :default-active="this.$route.path"
+      :default-active="path"
       active-text-color="#ffd04b"
+      :router="true"
     >
-      <el-menu-item index="/" class="menu__item">
-        <router-link to="/" class="menu__link">
+      <el-menu-item index="/" :route="router" class="menu__item">
+        <router-link to="/" class="menu__link " exact>
           <i class="el-icon-s-home menu__icon"></i>
         </router-link>
       </el-menu-item>
@@ -18,7 +19,7 @@
         index="/stocks"
         class="menu__item"
       >
-        <router-link to="/stocks" class="menu__link">
+        <router-link to="/stocks" class="menu__link" exact>
           Stocks
         </router-link>
       </el-menu-item>
@@ -27,7 +28,7 @@
         index="/portfolio"
         class="menu__item"
       >
-        <router-link to="/portfolio" class="menu__link">
+        <router-link to="/portfolio" class="menu__link" exact>
           Portfolio
         </router-link>
       </el-menu-item>
@@ -62,7 +63,7 @@
         index="/login"
         class="menu__item menu__item--right"
       >
-        <router-link to="/login" class="menu__link">
+        <router-link to="/login" class="menu__link" exact>
           Login
         </router-link>
       </el-menu-item>
@@ -70,7 +71,7 @@
         v-if="!isAuthenticated"
         index="/signup"
         class="menu__item menu__item--right">
-          <router-link to="/signup" class="menu__link">
+          <router-link to="/signup" class="menu__link" exact>
             Sign Up
           </router-link>
       </el-menu-item>
@@ -82,6 +83,12 @@
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
+  data () {
+    return {
+      activeLink: null
+    }
+  },
+
   methods: {
     ...mapActions([
       'randomStocks',
@@ -92,10 +99,30 @@ export default {
 
     onSave () {
       this.saveData()
+        .catch(error => {
+          if (error.response.status === 401) {
+            this.$notify.error({
+              title: `Error ${error.response.statusText}`,
+              message: error.response.data.error,
+              duration: 4000
+            })
+            this.logout()
+          }
+        })
     },
 
     onLoad () {
       this.loadData()
+        .catch(error => {
+          if (error.response.status === 401) {
+            this.$notify.error({
+              title: `Error ${error.response.statusText}`,
+              message: error.response.data.error,
+              duration: 4000
+            })
+            this.logout()
+          }
+        })
     },
 
     endDay () {
@@ -108,7 +135,14 @@ export default {
   },
 
   computed: {
-    ...mapGetters(['isAuthenticated', 'funds'])
+    ...mapGetters(['isAuthenticated', 'funds']),
+    router () {
+      return this.$router.history.current.path
+    },
+
+    path () {
+      return this.$route.path
+    }
   }
 }
 </script>

@@ -26,7 +26,7 @@
             class="login__button"
             type="success"
             block
-            @click="login('form')"
+            @click="onSubmit('form')"
           >Login</el-button>
         </el-form-item>
       </el-form>
@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'Login',
 
@@ -60,7 +61,11 @@ export default {
         ],
 
         password: [
-          { required: true, message: 'Password is required', trigger: 'blur' },
+          {
+            required: true,
+            message: 'Password is required',
+            trigger: 'blur'
+          },
           {
             min: 5,
             message: 'Password length should be at least 5 characters',
@@ -72,7 +77,9 @@ export default {
   },
 
   methods: {
-    login (formName) {
+    ...mapActions(['login']),
+
+    onSubmit (formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const loginForm = {
@@ -80,12 +87,18 @@ export default {
             password: this.form.password
           }
 
-          this.$store.dispatch('login', {
+          this.login({
             email: loginForm.email,
             password: loginForm.password
           })
+            .catch(error => {
+              this.$notify.error({
+                title: `Error ${error.response.status}`,
+                message: error.response.data.error.message,
+                duration: 3000
+              })
+            })
         } else {
-          alert('Error submit!')
           return false
         }
       })

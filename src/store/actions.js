@@ -5,7 +5,7 @@ export const loadData = ({ commit, state }) => {
     return
   }
 
-  axiosData.get('/data.json')
+  return axiosData.get('/data.json')
     .then(response => response.data)
     .then(data => {
       if (data) {
@@ -20,5 +20,5 @@ export const loadData = ({ commit, state }) => {
         commit('SET_STOCKS', stocks)
         commit('SET_PORTFOLIO', portfolio)
       }
-    }).catch(error => console.log(error.response))
+    })
 }

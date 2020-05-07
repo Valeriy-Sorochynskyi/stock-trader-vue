@@ -31,6 +31,7 @@ export default {
 
       state.funds += order.price * order.amount
     },
+
     'SET_PORTFOLIO' (state, portfolio) {
       state.funds = portfolio.funds
       state.stocks = portfolio.portfolioStocks ? portfolio.portfolioStocks : []
