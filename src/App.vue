@@ -17,11 +17,9 @@ export default {
   components: {
     Header
   },
-
   methods: {
     ...mapActions(['getStocks'])
   },
-
   created () {
     this.getStocks()
   }
@@ -43,12 +41,5 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
-
-.dropdown {
-  &__title,
-  &__item {
-    color: #fff;
-  }
 }
 </style>

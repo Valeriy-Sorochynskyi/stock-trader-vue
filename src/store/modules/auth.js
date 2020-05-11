@@ -31,8 +31,6 @@ export default {
           commit('authUser', {
             token: tokenId
           })
-
-          router.push('/')
         })
     },
 
@@ -50,8 +48,6 @@ export default {
           commit('authUser', {
             token: tokenId
           })
-
-          router.push('/')
         })
     },
 

@@ -23,7 +23,6 @@ export default {
   components: {
     StockForBuying
   },
-
   computed: {
     ...mapGetters(['stocks'])
   }

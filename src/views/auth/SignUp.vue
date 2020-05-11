@@ -32,7 +32,7 @@
             class="signup__button"
             type="success"
             block
-            @click="onSubmit('form')"
+            @click="onSubmit()"
           >SignUp</el-button>
         </el-form-item>
       </el-form>
@@ -53,7 +53,6 @@ export default {
         email: '',
         password: ''
       },
-
       rules: {
         username: [
           {
@@ -67,7 +66,6 @@ export default {
             trigger: 'blur'
           }
         ],
-
         email: [
           {
             required: true,
@@ -80,7 +78,6 @@ export default {
             trigger: 'blur'
           }
         ],
-
         password: [
           {
             required: true,
@@ -99,9 +96,8 @@ export default {
 
   methods: {
     ...mapActions(['signup']),
-
-    onSubmit (formName) {
-      this.$refs[formName].validate((valid) => {
+    onSubmit () {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           const formData = {
             username: this.form.username,
@@ -114,6 +110,9 @@ export default {
             email: formData.email,
             password: formData.password
           })
+            .then(() => {
+              this.$router.push('/')
+            })
             .catch(error => {
               this.$notify.error({
                 title: `Error ${error.response.status}`,

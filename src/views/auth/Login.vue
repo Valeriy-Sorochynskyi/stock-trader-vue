@@ -26,7 +26,7 @@
             class="login__button"
             type="success"
             block
-            @click="onSubmit('form')"
+            @click="onSubmit()"
           >Login</el-button>
         </el-form-item>
       </el-form>
@@ -38,14 +38,12 @@
 import { mapActions } from 'vuex'
 export default {
   name: 'Login',
-
   data () {
     return {
       form: {
         email: '',
         password: ''
       },
-
       rules: {
         email: [
           {
@@ -59,7 +57,6 @@ export default {
             trigger: 'blur'
           }
         ],
-
         password: [
           {
             required: true,
@@ -78,9 +75,8 @@ export default {
 
   methods: {
     ...mapActions(['login']),
-
-    onSubmit (formName) {
-      this.$refs[formName].validate((valid) => {
+    onSubmit () {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           const loginForm = {
             email: this.form.email,
@@ -91,6 +87,9 @@ export default {
             email: loginForm.email,
             password: loginForm.password
           })
+            .then(() => {
+              this.$router.push('/')
+            })
             .catch(error => {
               this.$notify.error({
                 title: `Error ${error.response.status}`,

@@ -44,15 +44,15 @@
               <span class="el-dropdown-link dropdown__title">
                 Save & List<i class="el-icon-arrow-down el-icon--right dropdown__icon"></i>
               </span>
-              <el-dropdown-menu slot="dropdown">
+              <el-dropdown-menu slot="dropdown" class="dropdown-menu">
                 <el-dropdown-item
-                  class="dropdown__item"
+                  class="dropdown-menu__item"
                   @click.native="onSave"
                 >
                   Save
                 </el-dropdown-item>
                 <el-dropdown-item
-                  class="dropdown__item"
+                  class="dropdown-menu__item"
                   @click.native="onLoad"
                 >
                   Load
@@ -101,49 +101,51 @@ export default {
       'loadData',
       'saveData'
     ]),
-
     onSave () {
       this.saveData()
+        .then(response => {
+          this.$notify({
+            title: `Success ${response.status}`,
+            message: response.statusText,
+            type: 'success'
+          })
+        })
         .catch(error => {
           if (error.response.status === 401) {
             this.$notify.error({
-              title: `Error ${error.response.statusText}`,
-              message: error.response.data.error,
-              duration: 4000
+              title: `Error ${error.response.status}`,
+              message: error.response.statusText
             })
-            this.logout()
           }
         })
     },
-
     onLoad () {
       this.loadData()
+        .then(() => {
+          this.$notify({
+            title: 'Success',
+            message: 'Loaded',
+            type: 'success'
+          })
+        })
         .catch(error => {
           if (error.response.status === 401) {
             this.$notify.error({
-              title: `Error ${error.response.statusText}`,
-              message: error.response.data.error,
-              duration: 4000
+              title: `Error ${error.response.status}`,
+              message: error.response.statusText
             })
-            this.logout()
           }
         })
     },
-
     endDay () {
       this.randomStocks()
     },
-
     onLogout () {
       this.logout()
     }
   },
-
   computed: {
-    ...mapGetters(['isAuthenticated', 'funds']),
-    router () {
-      return this.$router.history.current.path
-    }
+    ...mapGetters(['isAuthenticated', 'funds'])
   }
 }
 </script>
@@ -216,9 +218,18 @@ export default {
   }
 }
 
-.el-dropdown-menu {
+.dropdown {
+  &__title,
   &__item {
-    background-color: #67C23A88 !important;
+    color: #fff;
+  }
+}
+
+.dropdown-menu {
+  padding: 1px 0;
+
+  &__item {
+    background-color: #67C23A88;
     color: #fff;
     &:hover {
       background-color: #67C23A !important;
