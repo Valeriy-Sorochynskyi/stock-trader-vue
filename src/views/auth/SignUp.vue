@@ -27,19 +27,12 @@
             type="password"
           ></el-input>
         </el-form-item>
-        <!-- <el-form-item prop="confirm">
-          <el-input
-            v-model="form.confirm"
-            placeholder="Confirm"
-            type="password"
-          ></el-input>
-        </el-form-item> -->
         <el-form-item>
           <el-button
             class="signup__button"
             type="success"
             block
-            @click="signUp('form')"
+            @click="onSubmit()"
           >SignUp</el-button>
         </el-form-item>
       </el-form>
@@ -48,18 +41,18 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
 export default {
   name: 'SignUp',
 
   data () {
     return {
+      error: null,
       form: {
         username: '',
         email: '',
         password: ''
-        // confirm: '',
       },
-
       rules: {
         username: [
           {
@@ -73,7 +66,6 @@ export default {
             trigger: 'blur'
           }
         ],
-
         email: [
           {
             required: true,
@@ -86,31 +78,26 @@ export default {
             trigger: 'blur'
           }
         ],
-
         password: [
-          { required: true, message: 'Password is required', trigger: 'blur' },
+          {
+            required: true,
+            message: 'Password is required',
+            trigger: 'blur'
+          },
           {
             min: 5,
             message: 'Password length should be at least 5 characters',
             trigger: 'blur'
           }
         ]
-
-        // confirm: [
-        //   { required: true, message: 'Confirm is required', trigger: 'blur' },
-        //   {
-        //     min: 5,
-        //     message: 'Confirm length should be at least 5 characters',
-        //     trigger: 'blur'
-        //   }
-        // ]
       }
     }
   },
 
   methods: {
-    signUp (formName) {
-      this.$refs[formName].validate((valid) => {
+    ...mapActions(['signup']),
+    onSubmit () {
+      this.$refs.form.validate((valid) => {
         if (valid) {
           const formData = {
             username: this.form.username,
@@ -119,12 +106,21 @@ export default {
             confirm: this.form.confirm
           }
 
-          this.$store.dispatch('signup', {
+          this.signup({
             email: formData.email,
             password: formData.password
           })
+            .then(() => {
+              this.$router.push('/')
+            })
+            .catch(error => {
+              this.$notify.error({
+                title: `Error ${error.response.status}`,
+                message: error.response.data.error.message,
+                duration: 3000
+              })
+            })
         } else {
-          alert('Error submit!')
           return false
         }
       })

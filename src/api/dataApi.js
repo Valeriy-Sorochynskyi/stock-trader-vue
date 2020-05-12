@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getCookie } from '../helpers'
+import { getCookie } from '@/helpers'
 import store from '@/store'
 
 export const axiosData = axios.create({
@@ -16,7 +16,6 @@ axiosData.interceptors.response.use(response => {
   return response
 }, function (error) {
   if (error.response.status === 401) {
-    alert('You are not logged in, please log in!')
     store.dispatch('logout')
   }
 

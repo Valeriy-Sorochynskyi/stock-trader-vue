@@ -13,7 +13,7 @@
         :max="stock.amount"
       ></el-input-number>
       <el-button
-        :disabled="input <= 0"
+        :disabled="disabled"
         type="warning"
         @click="sellOrder"
       >
@@ -34,7 +34,6 @@ export default {
       input: 0
     }
   },
-
   methods: {
     ...mapActions(['sellStock']),
     sellOrder () {
@@ -43,11 +42,18 @@ export default {
         price: this.stock.price,
         amount: this.input
       }
+
       this.sellStock(order)
       this.input = 0
     },
     handleChange (value) {
       this.input = +value
+    }
+  },
+  computed: {
+    disabled () {
+      return this.input <= 0 ||
+        !Number.isInteger(Number(this.input))
     }
   }
 }

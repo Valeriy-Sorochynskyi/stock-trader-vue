@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import { getCookie } from '../helpers'
+import Home from '@/views/Home.vue'
+import store from '@/store'
 
 Vue.use(VueRouter)
 
@@ -19,60 +19,30 @@ const routes = [
     path: '/404',
     name: 'notFound',
     component: () => {
-      return import(/* webpackChunkName: "NotFound" */ '../views/NotFound.vue')
+      return import(/* webpackChunkName: "NotFound" */ '@/views/NotFound.vue')
     }
   },
   {
     path: '/portfolio',
     name: 'Portfolio',
-    component: () => import(/* webpackChunkName: "Portfolio" */ '../views/Portfolio.vue'),
-    beforeEnter (to, from, next) {
-      const token = getCookie('token')
-      if (token) {
-        next()
-      } else {
-        next('/login')
-      }
-    }
+    component: () => import(/* webpackChunkName: "Portfolio" */ '@/views/Portfolio.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/stocks',
     name: 'Stocks',
-    component: () => import(/* webpackChunkName: "Stocks" */ '../views/Stocks.vue'),
-    beforeEnter (to, from, next) {
-      const token = getCookie('token')
-      if (token) {
-        next()
-      } else {
-        next('/login')
-      }
-    }
+    component: () => import(/* webpackChunkName: "Stocks" */ '@/views/Stocks.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import(/* webpackChunkName: "Login" */ '../views/auth/Login.vue'),
-    beforeEnter (to, from, next) {
-      const token = getCookie('token')
-      if (!token) {
-        next()
-      } else {
-        next('/stocks')
-      }
-    }
+    component: () => import(/* webpackChunkName: "Login" */ '@/views/auth/Login.vue')
   },
   {
     path: '/signup',
     name: 'SignUp',
-    component: () => import(/* webpackChunkName: "SignUp" */ '../views/auth/SignUp.vue'),
-    beforeEnter (to, from, next) {
-      const token = getCookie('token')
-      if (!token) {
-        next()
-      } else {
-        next('/stocks')
-      }
-    }
+    component: () => import(/* webpackChunkName: "SignUp" */ '@/views/auth/SignUp.vue')
   }
 ]
 
@@ -80,6 +50,18 @@ const router = new VueRouter({
   mode: 'history',
   base: process.env.BASE_URL,
   routes
+})
+
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(record => record.meta.requiresAuth)) {
+    if (!store.state.auth.idToken) {
+      next('/login')
+    } else {
+      next()
+    }
+  } else {
+    next()
+  }
 })
 
 export default router

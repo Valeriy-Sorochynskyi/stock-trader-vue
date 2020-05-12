@@ -10,20 +10,16 @@
 </template>
 
 <script>
-import Header from './components/Header'
+import Header from '@/components/Header'
 import { mapActions } from 'vuex'
 
 export default {
   components: {
     Header
   },
-
   methods: {
-    ...mapActions([
-      'getStocks'
-    ])
+    ...mapActions(['getStocks'])
   },
-
   created () {
     this.getStocks()
   }
@@ -45,13 +41,5 @@ export default {
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
-}
-
-.menu__submenu {
-  .el-submenu__title {
-    i {
-      color: #fff;
-    }
-  }
 }
 </style>
