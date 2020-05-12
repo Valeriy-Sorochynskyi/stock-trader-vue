@@ -1,4 +1,4 @@
-import { axiosData } from '@/api/dataApi.js'
+import { axiosData } from '@/core/api/dataApi.js'
 
 export const loadData = ({ commit, state }) => {
   if (!state.auth.idToken) {

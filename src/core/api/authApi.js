@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-export const URL_KEY = 'AIzaSyDLzMdBM3yeRBVTM3z6fbSh3p8TYOq-0jQ'
-
 export const axiosAuth = axios.create({
   baseURL: 'https://identitytoolkit.googleapis.com/v1'
 })

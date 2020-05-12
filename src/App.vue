@@ -27,12 +27,6 @@ export default {
 </script>
 
 <style lang="scss">
-.card {
-  .el-card__header {
-    background-color: #67C23A88;
-  }
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;

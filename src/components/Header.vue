@@ -1,7 +1,7 @@
 <template>
   <header class="header">
     <nav class="menu">
-      <el-col :span="12" class="menu__list-container">
+      <el-col :span="8" class="menu__list-container">
         <ul class="menu__list menu__list--right">
           <router-link
             exact
@@ -27,7 +27,7 @@
           >Portfolio</router-link>
         </ul>
       </el-col>
-      <el-col :span="12" class="menu__list-container">
+      <el-col :span="16" class="menu__list-container">
         <ul class="menu__list menu__list--left">
           <button
             class="menu__button"

@@ -1,5 +1,5 @@
 import stocksFromServer from '@/data.js'
-import { axiosData } from '@/api/dataApi.js'
+import { axiosData } from '@/core/api/dataApi.js'
 
 export default {
   state: {
