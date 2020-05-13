@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   methods: {
@@ -145,7 +145,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'funds'])
+    ...mapState({
+      funds: state => state.portfolio.funds,
+      isAuthenticated: state => state.auth.idToken
+    })
   }
 }
 </script>

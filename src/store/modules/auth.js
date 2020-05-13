@@ -47,11 +47,5 @@ export default {
       commit('unAuth')
       router.push('/login')
     }
-  },
-
-  getters: {
-    isAuthenticated (state) {
-      return state.idToken !== null
-    }
   }
 }
