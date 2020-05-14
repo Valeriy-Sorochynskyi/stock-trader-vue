@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import StockForBuying from '@/components/StockForBuying'
+import StockForBuying from '@/components/stocks/StockForBuying'
 import { mapState } from 'vuex'
 
 export default {

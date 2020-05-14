@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import StockForSelling from '@/components/StockForSelling'
+import StockForSelling from '@/components/portfolio/StockForSelling'
 import { mapGetters } from 'vuex'
 
 export default {
