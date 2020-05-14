@@ -1,5 +1,5 @@
-import stocksFromServer from '@/data.js'
-import { axiosData } from '@/core/api/dataApi.js'
+import { data } from '@/core/config'
+import { dataService } from '@/services/data.service'
 
 export default {
   state: {
@@ -20,7 +20,7 @@ export default {
 
   actions: {
     getStocks ({ commit }) {
-      commit('SET_STOCKS', stocksFromServer)
+      commit('SET_STOCKS', data)
     },
 
     buyStock ({ commit }, order) {
@@ -38,11 +38,11 @@ export default {
 
       const data = {
         funds: rootState.portfolio.funds,
-        portfolioStocks: rootState.portfolio.portfolioStocks,
+        portfolioStocks: rootState.portfolio.stocks,
         stocks: state.stocks
       }
 
-      return axiosData.put('/data.json', data)
+      return dataService.sendData(data)
     }
   }
 }
