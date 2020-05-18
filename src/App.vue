@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Header from '@/components/Header'
+import Header from '@/components/shared/Header'
 import { mapActions } from 'vuex'
 
 export default {
@@ -27,12 +27,6 @@ export default {
 </script>
 
 <style lang="scss">
-.card {
-  .el-card__header {
-    background-color: #67C23A88;
-  }
-}
-
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s;

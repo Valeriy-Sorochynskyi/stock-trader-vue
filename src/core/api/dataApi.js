@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getCookie } from '@/helpers'
+import { getCookie } from '@/core/cookies.service.js'
 import store from '@/store'
 
 export const axiosData = axios.create({

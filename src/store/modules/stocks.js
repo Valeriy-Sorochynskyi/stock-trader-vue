@@ -1,37 +1,9 @@
-import stocksFromServer from '@/data.js'
-import { axiosData } from '@/api/dataApi.js'
+import { data } from '@/core/config'
+import { dataService } from '@/services/data.service'
 
 export default {
   state: {
     stocks: []
-  },
-
-  actions: {
-    getStocks ({ commit }) {
-      commit('SET_STOCKS', stocksFromServer)
-    },
-
-    buyStock ({ commit }, order) {
-      commit('BUY_STOCK', order)
-    },
-
-    randomStocks ({ commit }) {
-      commit('RND_STOCKS')
-    },
-
-    saveData ({ getters, rootState }) {
-      if (!rootState.auth.idToken) {
-        return
-      }
-
-      const data = {
-        funds: getters.funds,
-        portfolioStocks: getters.portfolioStocks,
-        stocks: getters.stocks
-      }
-
-      return axiosData.put('/data.json', data)
-    }
   },
 
   mutations: {
@@ -46,9 +18,31 @@ export default {
     }
   },
 
-  getters: {
-    stocks (state) {
-      return state.stocks
+  actions: {
+    getStocks ({ commit }) {
+      commit('SET_STOCKS', data)
+    },
+
+    buyStock ({ commit }, order) {
+      commit('BUY_STOCK', order)
+    },
+
+    randomStocks ({ commit }) {
+      commit('RND_STOCKS')
+    },
+
+    saveData ({ state, rootState }) {
+      if (!rootState.auth.idToken) {
+        return
+      }
+
+      const data = {
+        funds: rootState.portfolio.funds,
+        portfolioStocks: rootState.portfolio.stocks,
+        stocks: state.stocks
+      }
+
+      return dataService.sendData(data)
     }
   }
 }

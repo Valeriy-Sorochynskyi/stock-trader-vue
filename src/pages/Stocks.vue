@@ -2,7 +2,7 @@
   <div>
     <el-row :gutter="20">
         <el-col
-          v-for="stock in stocks"
+          v-for="stock in stocks.stocks"
           :key="stock.id"
           :sm="12"
           :md="12"
@@ -16,15 +16,15 @@
 </template>
 
 <script>
-import StockForBuying from '@/components/StockForBuying'
-import { mapGetters } from 'vuex'
+import StockForBuying from '@/components/stocks/StockForBuying'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     StockForBuying
   },
   computed: {
-    ...mapGetters(['stocks'])
+    ...mapState(['stocks'])
   }
 }
 </script>

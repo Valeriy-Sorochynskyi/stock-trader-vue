@@ -4,6 +4,23 @@ export default {
     stocks: []
   },
 
+  getters: {
+    portfolioStocks (state, getters, rootState) {
+      return state.stocks.map(stock => {
+        const record = rootState.stocks.stocks.find(
+          element => element.id === stock.id
+        )
+
+        return {
+          id: stock.id,
+          amount: stock.amount,
+          price: record.price,
+          name: record.name
+        }
+      })
+    }
+  },
+
   mutations: {
     'BUY_STOCK' (state, order) {
       const stock = state.stocks.find(stock => stock.id === order.id)
@@ -42,25 +59,5 @@ export default {
     sellStock ({ commit }, order) {
       commit('SELL_STOCK', order)
     }
-  },
-
-  getters: {
-    portfolioStocks (state, getters) {
-      return state.stocks.map(stock => {
-        const record = getters.stocks.find(element => element.id === stock.id)
-
-        return {
-          id: stock.id,
-          amount: stock.amount,
-          price: record.price,
-          name: record.name
-        }
-      })
-    },
-
-    funds (state) {
-      return state.funds
-    }
   }
-
 }
