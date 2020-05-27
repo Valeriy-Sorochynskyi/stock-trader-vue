@@ -1,7 +1,7 @@
 <template>
   <el-card class="card">
     <div slot="header">
-      <h3 class="card__header">{{ stock.name }}</h3>
+      <h3 class="card__header text-lg font-bold">{{ stock.name }}</h3>
       (<small>Price: {{ stock.price }}</small
       >)
     </div>
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapState } from 'vuex'
 
 export default {
   props: ['stock'],
@@ -50,9 +50,9 @@ export default {
     }
   },
   computed: {
-    funds () {
-      return this.$store.getters.funds
-    },
+    ...mapState({
+      funds: state => state.portfolio.funds
+    }),
     disabled () {
       return this.input <= 0 ||
         !Number.isInteger(Number(this.input))

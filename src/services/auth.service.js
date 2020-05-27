@@ -17,6 +17,12 @@ class AuthService {
       returnSecureToken: true
     })
   }
+
+  getUser (idToken) {
+    return axiosAuth.post(`/accounts:lookup?key=${URL_KEY}`, {
+      idToken
+    })
+  }
 }
 
 export const authService = new AuthService()

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { getCookie } from '@/core/cookies.service.js'
+import { Notification } from 'element-ui'
 import store from '@/store'
 
 export const axiosData = axios.create({
@@ -15,8 +16,15 @@ axiosData.interceptors.request.use(config => {
 axiosData.interceptors.response.use(response => {
   return response
 }, function (error) {
+  const message = error.response.statusText ? error.response.statusText : error
+
   if (error.response.status === 401) {
     store.dispatch('logout')
+
+    Notification.error({
+      title: 'Error',
+      message
+    })
   }
 
   return Promise.reject(error)

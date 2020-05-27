@@ -12,7 +12,8 @@ import {
   Dropdown,
   DropdownMenu,
   DropdownItem,
-  Notification
+  Notification,
+  Loading
 } from 'element-ui'
 
 Vue.use(Button)
@@ -27,5 +28,7 @@ Vue.use(Input)
 Vue.use(Dropdown)
 Vue.use(DropdownMenu)
 Vue.use(DropdownItem)
+Vue.use(Loading.directive)
 
 Vue.prototype.$notify = Notification
+Vue.prototype.$loading = Loading.service

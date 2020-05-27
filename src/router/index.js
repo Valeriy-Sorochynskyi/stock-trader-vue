@@ -1,6 +1,9 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '@/pages/Home.vue'
+import Stocks from '@/pages/Stocks.vue'
+import Portfolio from '@/pages/Portfolio.vue'
+import Prices from '@/pages/Prices.vue'
 import store from '@/store'
 
 Vue.use(VueRouter)
@@ -25,14 +28,18 @@ const routes = [
   {
     path: '/portfolio',
     name: 'Portfolio',
-    component: () => import(/* webpackChunkName: "Portfolio" */ '@/pages/Portfolio.vue'),
-    meta: { requiresAuth: true }
+    component: Portfolio,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/stocks',
     name: 'Stocks',
-    component: () => import(/* webpackChunkName: "Stocks" */ '@/pages/Stocks.vue'),
-    meta: { requiresAuth: true }
+    component: Stocks,
+    meta: {
+      requiresAuth: true
+    }
   },
   {
     path: '/login',
@@ -43,6 +50,12 @@ const routes = [
     path: '/signup',
     name: 'SignUp',
     component: () => import(/* webpackChunkName: "SignUp" */ '@/pages/auth/SignUp.vue')
+  },
+  {
+    path: '/prices',
+    name: 'Prices',
+    component: Prices,
+    meta: { requiresAuth: true }
   }
 ]
 
@@ -53,9 +66,15 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
+  const isLoggedIn = !!store.state.auth.idToken
+
   if (to.matched.some(record => record.meta.requiresAuth)) {
-    if (!store.state.auth.idToken) {
+    if (!isLoggedIn) {
       next('/login')
+    } else if (store.state.auth.user.id &&
+      !store.state.auth.user.status &&
+      to.path !== '/prices') {
+      next('/prices')
     } else {
       next()
     }
