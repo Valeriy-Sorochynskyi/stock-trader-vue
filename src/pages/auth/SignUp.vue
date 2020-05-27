@@ -31,6 +31,7 @@
           <el-button
             class="signup__button"
             type="success"
+            :loading="loading"
             block
             @click="onSubmit()"
           >SignUp</el-button>
@@ -47,7 +48,7 @@ export default {
 
   data () {
     return {
-      error: null,
+      loading: false,
       form: {
         username: '',
         email: '',
@@ -102,16 +103,18 @@ export default {
           const formData = {
             username: this.form.username,
             email: this.form.email,
-            password: this.form.password,
-            confirm: this.form.confirm
+            password: this.form.password
           }
+
+          this.loading = true
 
           this.signup({
             email: formData.email,
             password: formData.password
           })
             .then(() => {
-              this.$router.push('/')
+              this.$router.push('/prices')
+                .catch(err => err)
             })
             .catch(error => {
               this.$notify.error({
@@ -119,7 +122,7 @@ export default {
                 message: error.response.data.error.message,
                 duration: 3000
               })
-            })
+            }).finally(() => { this.loading = false })
         } else {
           return false
         }

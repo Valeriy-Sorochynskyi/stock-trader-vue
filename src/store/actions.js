@@ -1,14 +1,19 @@
 import { dataService } from '@/services/data.service'
 
-export const loadData = ({ commit, state }) => {
+export const loadData = ({ commit, state, dispatch }) => {
   if (!state.auth.idToken) {
     return
   }
 
-  return dataService.getData()
-    .then(response => response.data)
-    .then(data => {
-      if (data) {
+  const userId = state.auth.user.id
+
+  return dataService.getData(userId)
+    .then(({ data }) => {
+      if (data && data.status) {
+        commit('setStatus', data.status)
+      }
+
+      if (data && data.stocks) {
         const stocks = data.stocks
         const funds = data.funds
         const portfolioStocks = data.portfolioStocks
@@ -19,6 +24,9 @@ export const loadData = ({ commit, state }) => {
 
         commit('SET_STOCKS', stocks)
         commit('SET_PORTFOLIO', portfolio)
+      } else {
+        dispatch('getStocks')
+        dispatch('getFunds')
       }
     })
 }

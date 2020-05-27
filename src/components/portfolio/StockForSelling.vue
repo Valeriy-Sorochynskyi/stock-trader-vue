@@ -1,7 +1,7 @@
 <template>
   <el-card class="card">
     <div slot="header">
-      <h3 class="card__header">{{ stock.name }}</h3>
+      <h3 class="card__header text-lg font-bold">{{ stock.name }}</h3>
       (<small>Price: {{ stock.price }} | Amount: {{ stock.amount }}</small>)
     </div>
     <div class="card__body">

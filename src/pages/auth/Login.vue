@@ -26,6 +26,7 @@
             class="login__button"
             type="success"
             block
+            :loading="loading"
             @click="onSubmit()"
           >Login</el-button>
         </el-form-item>
@@ -40,6 +41,7 @@ export default {
   name: 'Login',
   data () {
     return {
+      loading: false,
       form: {
         email: '',
         password: ''
@@ -74,7 +76,7 @@ export default {
   },
 
   methods: {
-    ...mapActions(['login']),
+    ...mapActions(['login', 'getStocks']),
     onSubmit () {
       this.$refs.form.validate((valid) => {
         if (valid) {
@@ -83,20 +85,18 @@ export default {
             password: this.form.password
           }
 
-          this.login({
-            email: loginForm.email,
-            password: loginForm.password
-          })
+          this.loading = true
+
+          this.login(loginForm)
             .then(() => {
-              this.$router.push('/')
+              this.$router.push('/stocks').catch(err => err)
             })
             .catch(error => {
               this.$notify.error({
                 title: `Error ${error.response.status}`,
-                message: error.response.data.error.message,
-                duration: 3000
+                message: error.response.data.error.message
               })
-            })
+            }).finally(() => { this.loading = false })
         } else {
           return false
         }
