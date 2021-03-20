@@ -1,6 +1,8 @@
+import { dataService } from '@/services/data.service'
+
 export default {
   state: {
-    funds: 10000,
+    funds: 0,
     stocks: []
   },
 
@@ -36,7 +38,6 @@ export default {
 
       state.funds -= order.price * order.amount
     },
-
     'SELL_STOCK' (state, order) {
       const stock = state.stocks.find(stock => stock.id === order.id)
 
@@ -48,7 +49,6 @@ export default {
 
       state.funds += order.price * order.amount
     },
-
     'SET_PORTFOLIO' (state, portfolio) {
       state.funds = portfolio.funds
       state.stocks = portfolio.portfolioStocks ? portfolio.portfolioStocks : []
@@ -58,6 +58,12 @@ export default {
   actions: {
     sellStock ({ commit }, order) {
       commit('SELL_STOCK', order)
+    },
+    getFunds ({ commit }) {
+      return dataService.getFunds()
+        .then(res => {
+          commit('SET_PORTFOLIO', { funds: res.data })
+        })
     }
   }
 }

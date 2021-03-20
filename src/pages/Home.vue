@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    <h1 class="home__heading">Trade or View your Portfolio</h1>
+    <h1 class="home__heading text-xl font-bold">Trade or View your Portfolio</h1>
     <h4 v-if="!auth.idToken" class="home__sub-heading">You should sign up to save or load your Data</h4>
     <h4 v-else class="home__sub-heading">You can save or load your Data</h4>
     <h4 class="home__sub-heading">Click on 'New Day' to begin a New Day</h4>
@@ -24,8 +24,8 @@ export default {
 .home {
   &__heading,
   &__sub-heading {
-    text-align: center;
-    margin-bottom: 20px;
+    @apply text-center;
+    @apply my-2;
   }
 
   &__info {

@@ -1,5 +1,5 @@
-import { data } from '@/core/config'
 import { dataService } from '@/services/data.service'
+import { Notification } from 'element-ui'
 
 export default {
   state: {
@@ -20,7 +20,10 @@ export default {
 
   actions: {
     getStocks ({ commit }) {
-      commit('SET_STOCKS', data)
+      return dataService.getStocks()
+        .then(res => {
+          commit('SET_STOCKS', res.data)
+        })
     },
 
     buyStock ({ commit }, order) {
@@ -42,7 +45,15 @@ export default {
         stocks: state.stocks
       }
 
-      return dataService.sendData(data)
+      return dataService.sendData(data, rootState.auth.user.id)
+        .then(res => {
+          if (res.status === 200) {
+            Notification.success({
+              title: 'Success',
+              message: res.statusText
+            })
+          }
+        })
     }
   }
 }

@@ -25,6 +25,13 @@
             v-if="isAuthenticated"
             class="menu__item menu__item--link"
           >Portfolio</router-link>
+          <router-link
+            exact
+            to="/prices"
+            tag="li"
+            v-if="isAuthenticated"
+            class="menu__item menu__item--link"
+          >Prices</router-link>
         </ul>
       </el-col>
       <el-col :span="16" class="menu__list-container">
@@ -32,6 +39,7 @@
           <button
             class="menu__button"
             v-if="isAuthenticated"
+            :disabled="!status"
             @click="endDay"
             >
             End Day
@@ -42,7 +50,7 @@
               class="menu__dropdown dropdown"
             >
               <span class="el-dropdown-link dropdown__title">
-                Save & List<i class="el-icon-arrow-down el-icon--right dropdown__icon"></i>
+                Save & Load<i class="el-icon-arrow-down el-icon--right dropdown__icon"></i>
               </span>
               <el-dropdown-menu slot="dropdown" class="dropdown-menu">
                 <el-dropdown-item
@@ -94,6 +102,13 @@
 import { mapActions, mapState } from 'vuex'
 
 export default {
+  computed: {
+    ...mapState({
+      funds: state => state.portfolio.funds,
+      isAuthenticated: state => state.auth.idToken,
+      status: state => state.auth.user.status
+    })
+  },
   methods: {
     ...mapActions([
       'randomStocks',
@@ -102,38 +117,26 @@ export default {
       'saveData'
     ]),
     onSave () {
+      if (!this.status) {
+        return
+      }
+
       this.saveData()
-        .then(response => {
-          this.$notify({
-            title: `Success ${response.status}`,
-            message: response.statusText,
-            type: 'success'
-          })
-        })
         .catch(error => {
           if (error.response.status === 401) {
-            this.$notify.error({
-              title: `Error ${error.response.status}`,
-              message: error.response.statusText
-            })
+            this.$router.push('/login')
           }
         })
     },
     onLoad () {
+      if (!this.status) {
+        return
+      }
+
       this.loadData()
-        .then(() => {
-          this.$notify({
-            title: 'Success',
-            message: 'Loaded',
-            type: 'success'
-          })
-        })
         .catch(error => {
-          if (error.response.status === 401) {
-            this.$notify.error({
-              title: `Error ${error.response.status}`,
-              message: error.response.statusText
-            })
+          if (error.response && error.response.status === 401) {
+            this.$router.push('/login')
           }
         })
     },
@@ -142,20 +145,15 @@ export default {
     },
     onLogout () {
       this.logout()
+      this.$router.push('/login')
     }
-  },
-  computed: {
-    ...mapState({
-      funds: state => state.portfolio.funds,
-      isAuthenticated: state => state.auth.idToken
-    })
   }
 }
 </script>
 
 <style lang="scss" scoped>
 .header {
-  background-color: rgb(103, 194, 58);
+  background-color: #67c239;
   color: #fff;
 }
 
@@ -182,7 +180,6 @@ export default {
     border: none;
     height: 100%;
     color: #fff;
-    background-color: rgb(103, 194, 58);
     outline: none;
     line-height: 60px;
     padding: 0 20px;
